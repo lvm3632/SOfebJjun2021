@@ -4,17 +4,17 @@
 #include <signal.h>
 
 int pidHijoTermino;
-int termino = 0;
+int found = 0;
 void signalHandler(int sig){
-     pidHijoTermino = wait(NULL);
+    pidHijoTermino = wait(NULL);
 	printf("Mi hijo termino %d \n", pidHijoTermino);
-    termino = 1;
+    found = 1;
 }
 int main(){
     signal(17, signalHandler);
     int pid = fork();
     //int pidHijoTermino;
-    if(pid  == 0){
+    if(pid == 0){
         // Proceso hijo
         printf("Soy el proceso hijo\n");
     }else{
@@ -22,7 +22,7 @@ int main(){
         while(1){
             printf("Trabajando \n");
             sleep(1);
-            if(termino == 1){
+            if(found == 1){
                 printf("Terminó con el proceso hijo:  %d\n", pidHijoTermino);
                 break;
             }
